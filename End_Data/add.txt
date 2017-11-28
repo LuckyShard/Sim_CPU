@@ -1,0 +1,4 @@
+ADD 5 0 R1
+SUB 6 0 R2
+MUL 6 3 R3
+MOV 4 R4
