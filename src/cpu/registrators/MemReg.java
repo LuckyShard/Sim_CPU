@@ -77,6 +77,7 @@ public class MemReg {
 		}
 	}
 	public void IntializeReg(String fileIn) throws FileNotFoundException {
+		this.setFile("");
 		this.setFile(fileIn);
 		BufferedReader br = new BufferedReader(new FileReader(this.file));
 		
