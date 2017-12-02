@@ -3,40 +3,48 @@ import java.io.*;
 import java.util.ArrayList;
 public class MemReg {
 	private ArrayList<String> memAD;
+	private ArrayList<String> rComAD;
 	private ArrayList<Integer> memVal;
-	private int acc;
 	private ArrayList<Integer> commonRegister;
+	private int acc;
 	private String file;
 	public MemReg() {
 		this.memAD = new ArrayList<String>();
 		this.memVal = new ArrayList<Integer>();
-		this.acc = 0;
+		this.rComAD = new ArrayList<String>();
 		this.commonRegister = new ArrayList<Integer>();
+		this.acc = 0;
 		this.file = "";
 	}
-	public ArrayList<String> getmemAD() {
+	public ArrayList<String> getMemAD() {
 		return memAD;
 	}
-	public void setmemAD(ArrayList<String> memAD) {
+	public void setMemAD(ArrayList<String> memAD) {
 		this.memAD = memAD;
 	}
-	public ArrayList<Integer> getmemVal() {
+	public ArrayList<String> getrComAD() {
+		return rComAD;
+	}
+	public void setrComAD(ArrayList<String> rComAD) {
+		this.rComAD = rComAD;
+	}
+	public ArrayList<Integer> getMemVal() {
 		return memVal;
 	}
-	public void setmemVal(ArrayList<Integer> memVal) {
+	public void setMemVal(ArrayList<Integer> memVal) {
 		this.memVal = memVal;
-	}
-	public int getAcc() {
-		return acc;
-	}
-	public void setAcc(int acc) {
-		this.acc = acc;
 	}
 	public ArrayList<Integer> getCommonRegister() {
 		return commonRegister;
 	}
 	public void setCommonRegister(ArrayList<Integer> commonRegister) {
 		this.commonRegister = commonRegister;
+	}
+	public int getAcc() {
+		return acc;
+	}
+	public void setAcc(int acc) {
+		this.acc = acc;
 	}
 	public String getFile() {
 		return file;
@@ -76,7 +84,9 @@ public class MemReg {
 			
 			String line = br.readLine();
 			while(line != null) {
-				this.commonRegister.add(Integer.parseInt(line));
+				String[] keyVal  = line.split(":");
+				this.rComAD.add(keyVal[0]);
+				this.commonRegister.add(Integer.parseInt(keyVal[1]));
 				line = br.readLine();
 			}
 			br.close();

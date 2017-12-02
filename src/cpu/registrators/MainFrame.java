@@ -9,15 +9,16 @@ public class MainFrame {
 	private int MBR;
 	private String[] helper;
 	private int contador;
-	private Boolean[] valParam1;
-	private Boolean[] valParam2;
+	private Boolean[] c_valParam1;
+	private Boolean[] c_valParam2;
 	private Boolean[] valDest;
 	private String op,param1,param2,dest;
+	private int valParam1,valParam2,indexer1,indexer2;
 	public MainFrame() {
 		this.helper = new String[3];
 		this.valDest = new Boolean[]{ false,false};
-		this.valParam1 = new Boolean[] {false,false};
-		this.valParam2 = new Boolean[] {false,false};
+		this.c_valParam1 = new Boolean[] {false,false};
+		this.c_valParam2 = new Boolean[] {false,false};
 		this.op = "";
 		this.param1 = "";
 		this.param2 = "";
@@ -25,18 +26,27 @@ public class MainFrame {
 		this.iR = new PCIR();
 		this.Regis = new MemReg();
 		this.contador = 0;
+		this.valParam1 = this.valParam2 = 0;
+		this.indexer1 = 0;
+		this.indexer2 = 0;
 	}
-	public Boolean[] getValParam1() {
-		return valParam1;
-	}
-	public void setValParam1(Boolean[] valParam1) {
+	public void setValParam1(int valParam1) {
 		this.valParam1 = valParam1;
 	}
+	public void setValParam2(int valParam2) {
+		this.valParam2 = valParam2;
+	}
+	public Boolean[] getValParam1() {
+		return c_valParam1;
+	}
+	public void setValParam1(Boolean[] valParam1) {
+		this.c_valParam1 = valParam1;
+	}
 	public Boolean[] getValParam2() {
-		return valParam2;
+		return c_valParam2;
 	}
 	public void setValParam2(Boolean[] valParam2) {
-		this.valParam2 = valParam2;
+		this.c_valParam2 = valParam2;
 	}
 	public Boolean[] getValDest() {
 		return valDest;
@@ -158,8 +168,118 @@ public class MainFrame {
 		
 		
 	} // end ciclo instrução
+	private void findP1() {
+		Boolean flag = false;
+		while(flag == false) {
+			for(int i = 0; i < this.Regis.getMemAD().size();i++) {
+				if(this.param1.equals(this.Regis.getMemAD().get(i))) {
+					this.c_valParam1[0] = true;
+					this.c_valParam1[1] = false;
+					this.indexer1 = i;
+					flag = true;
+					return;
+				}
+			}
+			for(int i = 0; i < this.Regis.getrComAD().size(); i++) {
+				if(this.param1.equals(this.Regis.getrComAD().get(i))) {
+					this.c_valParam1[0] = false;
+					this.c_valParam1[1] = true;
+					this.indexer1  = i;
+					flag = true;
+					return;
+				}
+			}
+			this.c_valParam1[0] = false;
+			this.c_valParam1[1] = false;
+			flag = true;
+		}
+	}
+	private void findP2() {
+		Boolean flag = false;
+		while(flag == false) {
+			for(int i = 0; i < this.Regis.getMemAD().size();i++) {
+				if(this.param2.equals(this.Regis.getMemAD().get(i))) {
+					this.c_valParam2[0] = true;
+					this.c_valParam2[1] = false;
+					this.indexer2 = i;
+					flag = true;
+					return;
+				}
+			}
+			for(int i = 0; i < this.Regis.getrComAD().size(); i++) {
+				if(this.param2.equals(this.Regis.getrComAD().get(i))) {
+					this.c_valParam2[0] = false;
+					this.c_valParam2[1] = true;
+					this.indexer2  = i;
+					flag = true;
+					return;
+				}
+			}
+			this.c_valParam2[0] = false;
+			this.c_valParam2[1] = false;
+			flag = true;
+		}
+	}
 	private void dataCycle() {
-		System.out.println("\n----- Ciclo de Dados -----\n");
+		this.findP1();
+		System.out.printf("\n----- Ciclo de Dados -----\n");
+		System.out.printf("\n----- Buscando %s -----\n ",this.param1);
+		if(this.getContador() == 4) {
+			if(this.c_valParam1[0] == true && this.c_valParam1[1] == false) {
+				this.valParam1 = this.Regis.getMemVal().get(this.indexer1);
+				System.out.printf("MAR: %s      MBR: %d\n",this.param1,this.valParam1);
+				this.dataCycle2();
+				}
+			else if(this.c_valParam1[0] == false && this.c_valParam1[1] == true) {
+				this.valParam1 = this.Regis.getCommonRegister().get(this.indexer1);
+				System.out.printf("MAR: %s      MBR: %d\n",this.param1,this.valParam1);
+				this.dataCycle2();
+				}
+			if (this.c_valParam1[0] == false && this.c_valParam1[1] == false) {
+				this.valParam1 = Integer.parseInt(this.param1);
+				System.out.printf("MBR: %d\n",this.valParam1);
+				this.dataCycle2();
+				}
+			
+		}
+		if(this.getContador() == 3) {
+			if(this.c_valParam1[0] == true && this.c_valParam1[1] == false) {
+				this.valParam1 = this.Regis.getMemVal().get(this.indexer1);
+				System.out.printf("MAR: %s      MBR: %d\n",this.param1,this.valParam1);
+				
+				}
+			else if(this.c_valParam1[0] == false && this.c_valParam1[1] == true) {
+				this.valParam1 = this.Regis.getCommonRegister().get(this.indexer1);
+				System.out.printf("MAR: %s      MBR: %d\n",this.param1,this.valParam1);
+				
+				}
+			if (this.c_valParam1[0] == false && this.c_valParam1[1] == false) {
+				this.valParam1 = Integer.parseInt(this.param1);
+				System.out.printf("MBR: %d\n",this.valParam1);
+				
+				}
+			
+		}
+	}
+	private void dataCycle2() {
+		this.findP2();
+		System.out.printf("\n----- Buscando %s -----\n ",this.param2);
+		if(this.getContador() == 4) {
+			if(this.c_valParam2[0] == true && this.c_valParam2[1] == false) {
+				this.valParam2 = this.Regis.getMemVal().get(this.indexer2);
+				System.out.printf("MAR: %s      MBR: %d\n",this.param2,this.valParam2);
+				}
+			else if(this.c_valParam2[0] == false && this.c_valParam2[1] == true) {
+				this.valParam2 = this.Regis.getCommonRegister().get(this.indexer2);
+				System.out.printf("MAR: %s      MBR: %d\n",this.param2,this.valParam2);
+				}
+			if (this.c_valParam2[0] == false && this.c_valParam2[1] == false) {
+				this.valParam2 = Integer.parseInt(this.param2);
+				System.out.printf("MBR: %d\n",this.valParam2);
+				}
+			
+		}
+		
 	}
 
 }
