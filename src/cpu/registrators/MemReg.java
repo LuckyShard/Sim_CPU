@@ -2,29 +2,29 @@ package cpu.registrators;
 import java.io.*;
 import java.util.ArrayList;
 public class MemReg {
-	private ArrayList<String> MAR;
-	private ArrayList<Integer> MBR;
+	private ArrayList<String> memAD;
+	private ArrayList<Integer> memVal;
 	private int acc;
 	private ArrayList<Integer> commonRegister;
 	private String file;
 	public MemReg() {
-		this.MAR = new ArrayList<String>();
-		this.MBR = new ArrayList<Integer>();
+		this.memAD = new ArrayList<String>();
+		this.memVal = new ArrayList<Integer>();
 		this.acc = 0;
 		this.commonRegister = new ArrayList<Integer>();
 		this.file = "";
 	}
-	public ArrayList<String> getMAR() {
-		return MAR;
+	public ArrayList<String> getmemAD() {
+		return memAD;
 	}
-	public void setMAR(ArrayList<String> mAR) {
-		MAR = mAR;
+	public void setmemAD(ArrayList<String> memAD) {
+		this.memAD = memAD;
 	}
-	public ArrayList<Integer> getMBR() {
-		return MBR;
+	public ArrayList<Integer> getmemVal() {
+		return memVal;
 	}
-	public void setMBR(ArrayList<Integer> mBR) {
-		MBR = mBR;
+	public void setmemVal(ArrayList<Integer> memVal) {
+		this.memVal = memVal;
 	}
 	public int getAcc() {
 		return acc;
@@ -44,23 +44,26 @@ public class MemReg {
 	public void setFile(String file) {
 		this.file = file;
 	}
-	public void IntializeMem(String fileIn) throws FileNotFoundException {
+	public void IntializeMem(String fileIn){
 		this.setFile(fileIn);
-		BufferedReader br = new BufferedReader(new FileReader(this.file));
+		
 		
 		try {
-			
+			BufferedReader br = new BufferedReader(new FileReader(this.file));
 			String line = br.readLine();
 			while(line != null) {
 					String[] keyVal  = line.split(":");
-					this.MAR.add(keyVal[0]);
-					this.MBR.add(Integer.parseInt(keyVal[1]));
+					this.memAD.add(keyVal[0]);
+					this.memVal.add(Integer.parseInt(keyVal[1]));
 				
 				line = br.readLine();
+				
 			}
+			br.close();
 			
 			
 		}
+		
 		catch(IOException ex) {
 			System.out.println("Arquivo não encontrado");
 		}
@@ -76,6 +79,7 @@ public class MemReg {
 				this.commonRegister.add(Integer.parseInt(line));
 				line = br.readLine();
 			}
+			br.close();
 			
 			
 		}
@@ -85,8 +89,8 @@ public class MemReg {
 		
 	}
 	public void showItMem() {
-		for(int i = 0; i<this.MAR.size();i++) {
-			System.out.println("MAR : " + this.MAR.get(i) + " MBR : " + this.MBR.get(i));
+		for(int i = 0; i<this.memAD.size();i++) {
+			System.out.println("memAD : " + this.memAD.get(i) + " memVal : " + this.memVal.get(i));
 		}
 	}
 	public void showItCRegister() {

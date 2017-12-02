@@ -38,6 +38,7 @@ public class PCIR {
 				IR.add(line);
 				line = br.readLine();
 			}
+			br.close();
 			
 		}
 		catch(IOException ex) {
