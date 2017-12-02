@@ -13,7 +13,7 @@ public class MainFrame {
 	private Boolean[] c_valParam2;
 	private Boolean[] valDest;
 	private String op,param1,param2,dest;
-	private int valParam1,valParam2,indexer1,indexer2;
+	private int valParam1,valParam2,indexer1,indexer2,indexerDest;
 	public MainFrame() {
 		this.helper = new String[3];
 		this.valDest = new Boolean[]{ false,false};
@@ -29,6 +29,7 @@ public class MainFrame {
 		this.valParam1 = this.valParam2 = 0;
 		this.indexer1 = 0;
 		this.indexer2 = 0;
+		this.indexerDest = 0;
 	}
 	public void setValParam1(int valParam1) {
 		this.valParam1 = valParam1;
@@ -84,7 +85,7 @@ public class MainFrame {
 	public void setContador(int contador) {
 		this.contador = contador;
 	}
-	
+
 	public PCIR getiR() {
 		return iR;
 	}
@@ -121,7 +122,7 @@ public class MainFrame {
 				contador++;
 			}
 		}
-		
+
 	}
 	public void insCycle(String fileIr,String memReg,String comReg) throws FileNotFoundException {
 		this.iR.Intialize(fileIr);
@@ -151,13 +152,13 @@ public class MainFrame {
 				this.dataCycle();
 			}
 			/*for(int j = 0;j<helper.length;j++) {
-				
-				
+
+
 				//System.out.printf(helper[j]+"\n");
-				
+
 			}*/
-			
-			
+
+
 			i++;
 			this.iR.setPC(i);
 			this.setContador(0);
@@ -165,8 +166,8 @@ public class MainFrame {
 				flag = true;
 			}
 		}
-		
-		
+
+
 	} // end ciclo instrução
 	private void findP1() {
 		Boolean flag = false;
@@ -220,6 +221,32 @@ public class MainFrame {
 			flag = true;
 		}
 	}
+	private void findDest() {
+		Boolean flag = false;
+		while(flag == false) {
+			for(int i = 0; i < this.Regis.getMemAD().size();i++) {
+				if(this.dest.equals(this.Regis.getMemAD().get(i))) {
+					this.valDest[0] = true;
+					this.valDest[1] = false;
+					this.indexerDest = i;
+					flag = true;
+					return;
+				}
+			}
+			for(int i = 0; i < this.Regis.getrComAD().size(); i++) {
+				if(this.dest.equals(this.Regis.getrComAD().get(i))) {
+					this.valDest[0] = false;
+					this.valDest[1] = true;
+					this.indexerDest  = i;
+					flag = true;
+					return;
+				}
+			}
+			this.valDest[0] = false;
+			this.valDest[1] = false;
+			flag = true;
+		}
+	}
 	private void dataCycle() {
 		this.findP1();
 		System.out.printf("\n----- Ciclo de Dados -----\n");
@@ -229,36 +256,36 @@ public class MainFrame {
 				this.valParam1 = this.Regis.getMemVal().get(this.indexer1);
 				System.out.printf("MAR: %s      MBR: %d\n",this.param1,this.valParam1);
 				this.dataCycle2();
-				}
+			}
 			else if(this.c_valParam1[0] == false && this.c_valParam1[1] == true) {
 				this.valParam1 = this.Regis.getCommonRegister().get(this.indexer1);
 				System.out.printf("MAR: %s      MBR: %d\n",this.param1,this.valParam1);
 				this.dataCycle2();
-				}
+			}
 			if (this.c_valParam1[0] == false && this.c_valParam1[1] == false) {
 				this.valParam1 = Integer.parseInt(this.param1);
 				System.out.printf("MBR: %d\n",this.valParam1);
 				this.dataCycle2();
-				}
-			
+			}
+
 		}
 		if(this.getContador() == 3) {
 			if(this.c_valParam1[0] == true && this.c_valParam1[1] == false) {
 				this.valParam1 = this.Regis.getMemVal().get(this.indexer1);
 				System.out.printf("MAR: %s      MBR: %d\n",this.param1,this.valParam1);
-				
-				}
+				this.exCycle();
+			}
 			else if(this.c_valParam1[0] == false && this.c_valParam1[1] == true) {
 				this.valParam1 = this.Regis.getCommonRegister().get(this.indexer1);
 				System.out.printf("MAR: %s      MBR: %d\n",this.param1,this.valParam1);
-				
-				}
+				this.exCycle();
+			}
 			if (this.c_valParam1[0] == false && this.c_valParam1[1] == false) {
 				this.valParam1 = Integer.parseInt(this.param1);
 				System.out.printf("MBR: %d\n",this.valParam1);
-				
-				}
-			
+				this.exCycle();
+			}
+
 		}
 	}
 	private void dataCycle2() {
@@ -268,18 +295,88 @@ public class MainFrame {
 			if(this.c_valParam2[0] == true && this.c_valParam2[1] == false) {
 				this.valParam2 = this.Regis.getMemVal().get(this.indexer2);
 				System.out.printf("MAR: %s      MBR: %d\n",this.param2,this.valParam2);
-				}
+				this.exCycle();
+			}
 			else if(this.c_valParam2[0] == false && this.c_valParam2[1] == true) {
 				this.valParam2 = this.Regis.getCommonRegister().get(this.indexer2);
 				System.out.printf("MAR: %s      MBR: %d\n",this.param2,this.valParam2);
-				}
+				this.exCycle();
+			}
 			if (this.c_valParam2[0] == false && this.c_valParam2[1] == false) {
 				this.valParam2 = Integer.parseInt(this.param2);
 				System.out.printf("MBR: %d\n",this.valParam2);
-				}
-			
+				this.exCycle();
+			}
+
 		}
-		
+
+	}
+	private void exCycle() {
+		this.findDest();
+		if(this.getContador() == 4) {
+			System.out.println("\n----- Ciclo de execução -----\n");
+			if(this.valDest[0] == true && this.valDest[1] == false) {
+				if(this.op.equals("ADD")) {
+					System.out.println("\nADIÇÃO\n");
+				}
+				if(this.op.equals("SUB")) {
+					System.out.println("\nSUBTRAÇÃO\n");
+				}
+				if(this.op.equals("MUL")) {
+					System.out.println("\nMULTIPLICAÇÃO\n");
+				}
+
+			}
+			else if(this.valDest[0] == false && this.valDest[1] == true) {
+				if(this.op.equals("ADD")) {
+					System.out.println("\nADIÇÃO\n");
+				}
+				if(this.op.equals("SUB")) {
+					System.out.println("\nSUBTRAÇÃO\n");
+				}
+				if(this.op.equals("MUL")) {
+					System.out.println("\nMULTIPLICAÇÃO\n");
+				}
+			}
+			System.out.println("\n---------------- FIM -------------------\n");
+
+		}
+		if(this.getContador() == 3) {
+			System.out.println("\n----- Ciclo de execução -----\n");
+			if(this.valDest[0] == true && this.valDest[1] == false) {
+				if(this.op.equals("ADD")) {
+					System.out.println("\nADIÇÃO\n");
+				}
+				if(this.op.equals("SUB")) {
+					System.out.println("\nSUBTRAÇÃO\n");
+				}
+				if(this.op.equals("MUL")) {
+					System.out.println("\nMULTIPLICAÇÃO\n");
+				}
+				if(this.op.equals("MOV")) {
+					System.out.println("\nMOVE\n");
+
+				}
+			}
+			else if(this.valDest[0] == false && this.valDest[1] == true) {
+				if(this.op.equals("ADD")) {
+					System.out.println("\nADIÇÃO\n");
+				}
+				if(this.op.equals("SUB")) {
+					System.out.println("\nSUBTRAÇÃO\n");
+				}
+				if(this.op.equals("MUL")) {
+					System.out.println("\nMULTIPLICAÇÃO\n");
+				}
+				if(this.op.equals("MOV")) {
+					System.out.println("\nMOVE\n");
+
+				}
+
+			}
+			System.out.println("\n---------------- FIM -------------------\n");
+
+		}
 	}
 
 }
