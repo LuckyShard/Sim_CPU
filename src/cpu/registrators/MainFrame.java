@@ -5,15 +5,14 @@ import java.io.FileNotFoundException;
 public class MainFrame {
 	private PCIR iR;
 	private MemReg Regis;
-	private String MAR;
-	private int MBR;
 	private String[] helper;
 	private int contador;
 	private Boolean[] c_valParam1;
 	private Boolean[] c_valParam2;
 	private Boolean[] valDest;
 	private String op,param1,param2,dest;
-	private int valParam1,valParam2,indexer1,indexer2,indexerDest;
+	private int indexer1,indexer2,indexerDest;
+	private double valParam1,valParam2;
 	public MainFrame() {
 		this.helper = new String[3];
 		this.valDest = new Boolean[]{ false,false};
@@ -26,7 +25,7 @@ public class MainFrame {
 		this.iR = new PCIR();
 		this.Regis = new MemReg();
 		this.contador = 0;
-		this.valParam1 = this.valParam2 = 0;
+		this.valParam1 = this.valParam2 = 0.0;
 		this.indexer1 = 0;
 		this.indexer2 = 0;
 		this.indexerDest = 0;
@@ -98,18 +97,6 @@ public class MainFrame {
 	public void setRegis(MemReg regis) {
 		Regis = regis;
 	}
-	public String getMAR() {
-		return MAR;
-	}
-	public void setMAR(String mAR) {
-		MAR = mAR;
-	}
-	public int getMBR() {
-		return MBR;
-	}
-	public void setMBR(int mBR) {
-		MBR = mBR;
-	}
 	public String[] getHelper() {
 		return helper;
 	}
@@ -140,7 +127,7 @@ public class MainFrame {
 				param2 = helper[2];
 				dest = helper[3];
 				System.out.printf("----- Instrução : %s %s %s %s -----\n",op,param1,param2,dest);
-				System.out.printf("PC : %d     IR : %s \n MAR : %s\n",this.iR.getPC(),this.iR.getIR().get(i),this.iR.getIR().get(i));
+				System.out.printf("PC : %d    IR : %s \n      MAR : %s\n",this.iR.getPC(),this.iR.getIR().get(i),this.iR.getIR().get(i));
 				this.dataCycle();
 			}
 			if(this.getContador() == 3) {
@@ -148,17 +135,9 @@ public class MainFrame {
 				param1 = helper[1];
 				dest = helper[2];
 				System.out.printf("----- Instrução : %s %s  %s -----\n",op,param1,dest);
-				System.out.printf("PC : %d     IR : %s \n MAR : %s\n",this.iR.getPC(),this.iR.getIR().get(i),this.iR.getIR().get(i));
+				System.out.printf("PC : %d     IR : %s \n      MAR : %s\n",this.iR.getPC(),this.iR.getIR().get(i),this.iR.getIR().get(i));
 				this.dataCycle();
 			}
-			/*for(int j = 0;j<helper.length;j++) {
-
-
-				//System.out.printf(helper[j]+"\n");
-
-			}*/
-
-
 			i++;
 			this.iR.setPC(i);
 			this.setContador(0);
@@ -254,17 +233,17 @@ public class MainFrame {
 		if(this.getContador() == 4) {
 			if(this.c_valParam1[0] == true && this.c_valParam1[1] == false) {
 				this.valParam1 = this.Regis.getMemVal().get(this.indexer1);
-				System.out.printf("MAR: %s      MBR: %d\n",this.param1,this.valParam1);
+				System.out.printf("MAR: %s      MBR: %.2f\n",this.param1,this.valParam1);
 				this.dataCycle2();
 			}
 			else if(this.c_valParam1[0] == false && this.c_valParam1[1] == true) {
 				this.valParam1 = this.Regis.getCommonRegister().get(this.indexer1);
-				System.out.printf("MAR: %s      MBR: %d\n",this.param1,this.valParam1);
+				System.out.printf("MAR: %s      MBR: %.2f\n",this.param1,this.valParam1);
 				this.dataCycle2();
 			}
 			if (this.c_valParam1[0] == false && this.c_valParam1[1] == false) {
-				this.valParam1 = Integer.parseInt(this.param1);
-				System.out.printf("MBR: %d\n",this.valParam1);
+				this.valParam1 = Double.parseDouble(this.param1);
+				System.out.printf("MBR: %.2f\n",this.valParam1);
 				this.dataCycle2();
 			}
 
@@ -272,17 +251,17 @@ public class MainFrame {
 		if(this.getContador() == 3) {
 			if(this.c_valParam1[0] == true && this.c_valParam1[1] == false) {
 				this.valParam1 = this.Regis.getMemVal().get(this.indexer1);
-				System.out.printf("MAR: %s      MBR: %d\n",this.param1,this.valParam1);
+				System.out.printf("MAR: %s      MBR: %.2f\n",this.param1,this.valParam1);
 				this.exCycle();
 			}
 			else if(this.c_valParam1[0] == false && this.c_valParam1[1] == true) {
 				this.valParam1 = this.Regis.getCommonRegister().get(this.indexer1);
-				System.out.printf("MAR: %s      MBR: %d\n",this.param1,this.valParam1);
+				System.out.printf("MAR: %s      MBR: %.2f\n",this.param1,this.valParam1);
 				this.exCycle();
 			}
 			if (this.c_valParam1[0] == false && this.c_valParam1[1] == false) {
-				this.valParam1 = Integer.parseInt(this.param1);
-				System.out.printf("MBR: %d\n",this.valParam1);
+				this.valParam1 = Double.parseDouble(this.param1);
+				System.out.printf("MBR: %.2f\n",this.valParam1);
 				this.exCycle();
 			}
 
@@ -294,17 +273,17 @@ public class MainFrame {
 		if(this.getContador() == 4) {
 			if(this.c_valParam2[0] == true && this.c_valParam2[1] == false) {
 				this.valParam2 = this.Regis.getMemVal().get(this.indexer2);
-				System.out.printf("MAR: %s      MBR: %d\n",this.param2,this.valParam2);
+				System.out.printf("MAR: %s      MBR: %.2f\n",this.param2,this.valParam2);
 				this.exCycle();
 			}
 			else if(this.c_valParam2[0] == false && this.c_valParam2[1] == true) {
 				this.valParam2 = this.Regis.getCommonRegister().get(this.indexer2);
-				System.out.printf("MAR: %s      MBR: %d\n",this.param2,this.valParam2);
+				System.out.printf("MAR: %s      MBR: %.2f\n",this.param2,this.valParam2);
 				this.exCycle();
 			}
 			if (this.c_valParam2[0] == false && this.c_valParam2[1] == false) {
-				this.valParam2 = Integer.parseInt(this.param2);
-				System.out.printf("MBR: %d\n",this.valParam2);
+				this.valParam2 = Double.parseDouble(this.param2);
+				System.out.printf("MBR: %.2f\n",this.valParam2);
 				this.exCycle();
 			}
 
@@ -313,48 +292,47 @@ public class MainFrame {
 	}
 	private void exCycle() {
 		this.findDest();
-		int expression = 0;
+		double expression = 0;
 		if(this.getContador() == 4) {
 			
 			System.out.println("\n----- Ciclo de execução -----\n");
-			System.out.printf("%d %d\n",this.valParam1,this.valParam2);
 			if(this.valDest[0] == true && this.valDest[1] == false) {
 				this.Regis.setAcc(this.valParam1);
 				this.Regis.getCommonRegister().set(0,this.valParam2);
-				int oldVal = 0;
+				double oldVal = 0;
 				if(this.op.equals("ADD")) {
 					oldVal = this.Regis.getMemVal().get(this.indexerDest);
 					expression = this.valParam1+this.valParam2;
 					expression+= this.Regis.getMemVal().get(this.indexerDest);
-					this.Regis.getMemVal().add(this.indexerDest,expression);
-					System.out.printf("ACC : %d",this.Regis.getAcc());
-					System.out.printf(" R0 : %d",this.Regis.getCommonRegister().get(0));
-					System.out.printf("   Mem[%d] : %d",this.indexerDest,oldVal);
-					System.out.printf("  MAR : %s  MBR : %d",this.dest,expression);
+					this.Regis.getMemVal().set(this.indexerDest,expression);
+					System.out.printf("ACC : %.2f",this.Regis.getAcc());
+					System.out.printf(" R0 : %.2f",this.Regis.getCommonRegister().get(0));
+					System.out.printf("   Mem[%d] : %.2f",this.indexerDest,oldVal);
+					System.out.printf("  MAR : %s  MBR : %.2f",this.dest,expression);
 					
 				}
 				if(this.op.equals("SUB")) {
 					oldVal = this.Regis.getMemVal().get(this.indexerDest);
 					expression = this.valParam1 - this.valParam2 - this.Regis.getMemVal().get(this.indexerDest);
-					this.Regis.getMemVal().add(this.indexerDest,expression);
-					System.out.printf("ACC : %d",this.Regis.getAcc());
-					System.out.printf(" R0 : %d",this.Regis.getCommonRegister().get(0));
-					System.out.printf("   Mem[%d] : %d",this.indexerDest,oldVal);
-					System.out.printf("  MAR : %s  MBR : %d\n",this.dest,expression);
+					this.Regis.getMemVal().set(this.indexerDest,expression);
+					System.out.printf("ACC : %.2f",this.Regis.getAcc());
+					System.out.printf(" R0 : %.2f",this.Regis.getCommonRegister().get(0));
+					System.out.printf("   Mem[%d] : %.2f",this.indexerDest,oldVal);
+					System.out.printf("  MAR : %s  MBR : %.2f\n",this.dest,expression);
 				}
 				if(this.op.equals("MUL")) {
 					oldVal = this.Regis.getMemVal().get(this.indexerDest);
 					expression = this.valParam1 * this.valParam2 * this.Regis.getMemVal().get(this.indexerDest);
-					this.Regis.getMemVal().add(this.indexerDest,expression);
-					System.out.printf("ACC : %d",this.Regis.getAcc());
-					System.out.printf(" R0 : %d",this.Regis.getCommonRegister().get(0));
-					System.out.printf("   R[%d] : %d",this.indexerDest,oldVal);
-					System.out.printf("  MAR : %s  MBR : %d",this.dest,expression);
+					this.Regis.getMemVal().set(this.indexerDest,expression);
+					System.out.printf("ACC : %.2f",this.Regis.getAcc());
+					System.out.printf(" R0 : %.2f",this.Regis.getCommonRegister().get(0));
+					System.out.printf("   R[%d] : %.2f",this.indexerDest,oldVal);
+					System.out.printf("  MAR : %s  MBR : %.2f",this.dest,expression);
 				}
 
 			}
 			else if(this.valDest[0] == false && this.valDest[1] == true) {
-				int ov = 0;
+				double ov = 0;
 				this.Regis.setAcc(this.valParam1);
 				this.Regis.getCommonRegister().set(0,this.valParam2);
 				
@@ -362,29 +340,29 @@ public class MainFrame {
 					ov = this.Regis.getCommonRegister().get(this.indexerDest);
 					expression = this.valParam1+this.valParam2;
 					expression+= this.Regis.getCommonRegister().get(this.indexerDest);
-					this.Regis.getCommonRegister().add(this.indexerDest,expression);
-					System.out.printf("ACC : %d",this.Regis.getAcc());
-					System.out.printf(" R0 : %d",this.Regis.getCommonRegister().get(0));
-					System.out.printf("   R[%d] : %d",this.indexerDest,ov);
-					System.out.printf("  MAR : %s  MBR : %d",this.dest,expression);
+					this.Regis.getCommonRegister().set(this.indexerDest,expression);
+					System.out.printf("ACC : %.2f",this.Regis.getAcc());
+					System.out.printf(" R0 : %.2f",this.Regis.getCommonRegister().get(0));
+					System.out.printf("   R[%d] : %.2f",this.indexerDest,ov);
+					System.out.printf("  MAR : %s  MBR : %.2f",this.dest,expression);
 				}
 				if(this.op.equals("SUB")) {
 					ov = this.Regis.getCommonRegister().get(this.indexerDest);
 					expression = this.Regis.getAcc()-this.valParam2-this.Regis.getCommonRegister().get(this.indexerDest);
-					this.Regis.getCommonRegister().add(this.indexerDest,expression);
-					System.out.printf("ACC : %d",this.Regis.getAcc());
-					System.out.printf(" R0 : %d",this.Regis.getCommonRegister().get(0));
-					System.out.printf("   R[%d] : %d",this.indexerDest,ov);
-					System.out.printf("  MAR : %s  MBR : %d",this.dest,expression);
+					this.Regis.getCommonRegister().set(this.indexerDest,expression);
+					System.out.printf("ACC : %.2f",this.Regis.getAcc());
+					System.out.printf(" R0 : %.2f",this.Regis.getCommonRegister().get(0));
+					System.out.printf("   R[%d] : %.2f",this.indexerDest,ov);
+					System.out.printf("  MAR : %s  MBR : %.2f",this.dest,expression);
 				}
 				if(this.op.equals("MUL")) {
 					ov = this.Regis.getCommonRegister().get(this.indexerDest);
 					expression = this.Regis.getAcc()*this.valParam2*this.Regis.getCommonRegister().get(this.indexerDest);
-					this.Regis.getCommonRegister().add(this.indexerDest,expression);
-					System.out.printf("ACC : %d",this.Regis.getAcc());
-					System.out.printf(" R0 : %d",this.Regis.getCommonRegister().get(0));
-					System.out.printf("   R[%d] : %d",this.indexerDest,ov);
-					System.out.printf("  MAR : %s  MBR : %d",this.dest,expression);
+					this.Regis.getCommonRegister().set(this.indexerDest,expression);
+					System.out.printf("ACC : %.2f",this.Regis.getAcc());
+					System.out.printf(" R0 : %.2f",this.Regis.getCommonRegister().get(0));
+					System.out.printf("   R[%d] : %.2f",this.indexerDest,ov);
+					System.out.printf("  MAR : %s  MBR : %.2f",this.dest,expression);
 				}
 			}
 			System.out.println("\n\n---------------- FIM -------------------\n");
@@ -394,75 +372,75 @@ public class MainFrame {
 			System.out.println("\n----- Ciclo de execução -----\n");
 			if(this.valDest[0] == true && this.valDest[1] == false) {
 				this.Regis.setAcc(this.valParam1);
-				int oldVal = 0;
+				double oldVal = 0;
 				if(this.op.equals("ADD")) {
 					oldVal = this.Regis.getMemVal().get(this.indexerDest);
 					expression = this.valParam1+this.Regis.getMemVal().get(this.indexerDest);
-					this.Regis.getMemVal().add(this.indexerDest,expression);
-					System.out.printf("ACC : %d",this.Regis.getAcc());
-					System.out.printf("   Mem[%d] : %d",this.indexerDest,oldVal);
-					System.out.printf("  MAR : %s  MBR : %d",this.dest,expression);
+					this.Regis.getMemVal().set(this.indexerDest,expression);
+					System.out.printf("ACC : %.2f",this.Regis.getAcc());
+					System.out.printf("   Mem[%d] : %.2f",this.indexerDest,oldVal);
+					System.out.printf("  MAR : %s  MBR : %.2f",this.dest,expression);
 				}
 				if(this.op.equals("SUB")) {
 					oldVal = this.Regis.getMemVal().get(this.indexerDest);
 					expression = this.valParam1-this.Regis.getMemVal().get(this.indexerDest);
-					this.Regis.getMemVal().add(this.indexerDest,expression);
-					System.out.printf("ACC : %d",this.Regis.getAcc());
-					System.out.printf("   Mem[%d] : %d",this.indexerDest,oldVal);
-					System.out.printf("  MAR : %s  MBR : %d",this.dest,expression);
+					this.Regis.getMemVal().set(this.indexerDest,expression);
+					System.out.printf("ACC : %.2f",this.Regis.getAcc());
+					System.out.printf("   Mem[%d] : %.2f",this.indexerDest,oldVal);
+					System.out.printf("  MAR : %s  MBR : %.2f",this.dest,expression);
 				
 				}
 				if(this.op.equals("MUL")) {
 					oldVal = this.Regis.getMemVal().get(this.indexerDest);
 					expression = this.valParam1*this.Regis.getMemVal().get(this.indexerDest);
-					this.Regis.getMemVal().add(this.indexerDest,expression);
-					System.out.printf("ACC : %d",this.Regis.getAcc());
-					System.out.printf("   Mem[%d] : %d",this.indexerDest,oldVal);
-					System.out.printf("  MAR : %s  MBR : %d",this.dest,expression);
+					this.Regis.getMemVal().set(this.indexerDest,expression);
+					System.out.printf("ACC : %.2f",this.Regis.getAcc());
+					System.out.printf("   Mem[%d] : %.2f",this.indexerDest,oldVal);
+					System.out.printf("  MAR : %s  MBR : %.2f",this.dest,expression);
 				}
 				if(this.op.equals("MOV")) {
 					oldVal = this.Regis.getMemVal().get(this.indexerDest);
 					this.Regis.getMemVal().set(this.indexerDest, this.valParam1);
-					System.out.printf("ACC : %d",this.Regis.getAcc());
-					System.out.printf("   Mem[%d] : %d",this.indexerDest,oldVal);
-					System.out.printf("  MAR : %s  MBR : %d",this.dest,this.Regis.getMemVal().get(this.indexerDest));
+					System.out.printf("ACC : %.2f",this.Regis.getAcc());
+					System.out.printf("   Mem[%d] : %.2f",this.indexerDest,oldVal);
+					System.out.printf("  MAR : %s  MBR : %.2f",this.dest,this.Regis.getMemVal().get(this.indexerDest));
 					
 
 				}
 			}
 			else if(this.valDest[0] == false && this.valDest[1] == true) {
 				this.Regis.setAcc(this.valParam1);
-				int ov = 0;
+				double ov = 0;
 				if(this.op.equals("ADD")) {
 					ov = this.Regis.getCommonRegister().get(this.indexerDest);
 					expression = this.Regis.getAcc()+this.Regis.getCommonRegister().get(this.indexerDest);
-					this.Regis.getCommonRegister().add(this.indexerDest,expression);
-					System.out.printf("ACC : %d",this.Regis.getAcc());
-					System.out.printf("   R[%d] : %d",this.indexerDest,ov);
-					System.out.printf("  MAR : %s  MBR : %d",this.dest,expression);
+					this.Regis.getCommonRegister().set(this.indexerDest,expression);
+					System.out.printf("ACC : %.2f",this.Regis.getAcc());
+					System.out.printf("   R[%d] : %.2f",this.indexerDest,ov);
+					System.out.printf("  MAR : %s  MBR : %.2f",this.dest,expression);
 				}
 				if(this.op.equals("SUB")) {
 					ov = this.Regis.getCommonRegister().get(this.indexerDest);
 					expression = this.Regis.getAcc()-this.Regis.getCommonRegister().get(this.indexerDest);
-					this.Regis.getCommonRegister().add(this.indexerDest,expression);
-					System.out.printf("ACC : %d",this.Regis.getAcc());
-					System.out.printf("   R[%d] : %d",this.indexerDest,ov);
-					System.out.printf("  MAR : %s  MBR : %d",this.dest,expression);
+					this.Regis.getCommonRegister().set(this.indexerDest,expression);
+					System.out.printf("ACC : %.2f",this.Regis.getAcc());
+					System.out.printf("   R[%d] : %.2f",this.indexerDest,ov);
+					System.out.printf("  MAR : %s  MBR : %.2f",this.dest,expression);
 				}
 				if(this.op.equals("MUL")) {
 					ov = this.Regis.getCommonRegister().get(this.indexerDest);
 					expression = this.Regis.getAcc()*this.Regis.getCommonRegister().get(this.indexerDest);
-					this.Regis.getCommonRegister().add(this.indexerDest,expression);
-					System.out.printf("ACC : %d",this.Regis.getAcc());
-					System.out.printf("   R[%d] : %d",this.indexerDest,ov);
-					System.out.printf("  MAR : %s  MBR : %d",this.dest,expression);
+					this.Regis.getCommonRegister().set(this.indexerDest,expression);
+					System.out.printf("ACC : %.2f",this.Regis.getAcc());
+					System.out.printf("   R[%d] : %.2f",this.indexerDest,ov);
+					System.out.printf("  MAR : %s  MBR : %.2f",this.dest,expression);
 				}
 				if(this.op.equals("MOV")) {
 					ov = this.Regis.getCommonRegister().get(this.indexerDest);
 					this.Regis.getCommonRegister().set(this.indexerDest, this.valParam1);
-					System.out.printf("ACC : %d",this.Regis.getAcc());
-					System.out.printf("   R[%d] : %d",this.indexerDest,ov);
-					System.out.printf("  MAR : %s  MBR : %d",this.dest,this.Regis.getCommonRegister().get(this.indexerDest));
+					System.out.printf("ACC : %.2f",this.Regis.getAcc());
+					System.out.printf("   R[%d] : %.2f",this.indexerDest,ov);
+					System.out.printf("  MAR : %s  MBR : %.2f",this.dest,this.Regis.getCommonRegister().get(this.indexerDest));
 					
 
 				}

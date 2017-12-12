@@ -4,16 +4,16 @@ import java.util.ArrayList;
 public class MemReg {
 	private ArrayList<String> memAD;
 	private ArrayList<String> rComAD;
-	private ArrayList<Integer> memVal;
-	private ArrayList<Integer> commonRegister;
-	private int acc;
+	private ArrayList<Double> memVal;
+	private ArrayList<Double> commonRegister;
+	private double acc;
 	private String file;
 	public MemReg() {
 		this.memAD = new ArrayList<String>();
-		this.memVal = new ArrayList<Integer>();
+		this.memVal = new ArrayList<Double>();
 		this.rComAD = new ArrayList<String>();
-		this.commonRegister = new ArrayList<Integer>();
-		this.acc = 0;
+		this.commonRegister = new ArrayList<Double>();
+		this.acc = 0.0;
 		this.file = "";
 	}
 	public ArrayList<String> getMemAD() {
@@ -28,22 +28,22 @@ public class MemReg {
 	public void setrComAD(ArrayList<String> rComAD) {
 		this.rComAD = rComAD;
 	}
-	public ArrayList<Integer> getMemVal() {
+	public ArrayList<Double> getMemVal() {
 		return memVal;
 	}
-	public void setMemVal(ArrayList<Integer> memVal) {
+	public void setMemVal(ArrayList<Double> memVal) {
 		this.memVal = memVal;
 	}
-	public ArrayList<Integer> getCommonRegister() {
+	public ArrayList<Double> getCommonRegister() {
 		return commonRegister;
 	}
-	public void setCommonRegister(ArrayList<Integer> commonRegister) {
+	public void setCommonRegister(ArrayList<Double> commonRegister) {
 		this.commonRegister = commonRegister;
 	}
-	public int getAcc() {
+	public double getAcc() {
 		return acc;
 	}
-	public void setAcc(int acc) {
+	public void setAcc(double acc) {
 		this.acc = acc;
 	}
 	public String getFile() {
@@ -62,7 +62,7 @@ public class MemReg {
 			while(line != null) {
 					String[] keyVal  = line.split(":");
 					this.memAD.add(keyVal[0]);
-					this.memVal.add(Integer.parseInt(keyVal[1]));
+					this.memVal.add(Double.parseDouble(keyVal[1]));
 				
 				line = br.readLine();
 				
@@ -87,7 +87,7 @@ public class MemReg {
 			while(line != null) {
 				String[] keyVal  = line.split(":");
 				this.rComAD.add(keyVal[0]);
-				this.commonRegister.add(Integer.parseInt(keyVal[1]));
+				this.commonRegister.add(Double.parseDouble(keyVal[1]));
 				line = br.readLine();
 			}
 			br.close();
